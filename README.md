@@ -27,9 +27,43 @@ npm run build      # 产物在 dist/
 
 ## 部署
 
-推送到 `main` 后，`.github/workflows/deploy.yml` 会构建并发布到 GitHub Pages。首次使用需要在仓库 **Settings → Pages → Source** 选择 **GitHub Actions**。
+网站地址：**https://hank1426.github.io/music-theory-lab/**
 
-发布后在手机浏览器打开，用「添加到桌面」即可像 App 一样使用（支持离线）。
+部署由 GitHub Actions 完成（`.github/workflows/deploy.yml`），流程是：安装依赖 → 跑单元测试 → 构建 → 发布到 GitHub Pages。测试不通过就不会发布。
+
+### 首次设置（只做一次）
+
+仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。
+
+### 日常部署
+
+**推送到 `main` 分支就会自动部署**，不需要其他操作：
+
+```bash
+git push
+```
+
+也可以不改代码、手动再部署一次：打开仓库的 **Actions** 页 → 左侧选 **Deploy to GitHub Pages** → 右侧 **Run workflow** → 选 `main` → **Run workflow**。
+
+### 查看部署结果
+
+1. 打开仓库的 **Actions** 页，找到最新一次运行，通常 1~2 分钟完成。
+2. `build` 和 `deploy` 两个任务都是绿色 ✓ 就是成功了。`deploy` 任务里会显示网站地址。
+3. 失败的话点进去看是哪一步红了：
+   - `npm test` 红了：单元测试没通过，先在本地运行 `npm test` 修复。
+   - `deploy` 红了：通常是运行时 Pages 还没有设置成 GitHub Actions。确认设置后，在这次运行的页面点 **Re-run all jobs**。
+
+### 在手机上使用
+
+1. 手机浏览器打开上面的网站地址。第一次打开会缓存全部文件（约 2MB），之后没有网络也能用。
+2. 浏览器菜单里选 **添加到桌面** 或 **添加到主屏幕**，以后从桌面图标打开。
+3. 发布新版本后，手机上可能还是旧版本（被离线缓存了）。**关掉页面重新打开一次**就会更新。
+
+> GitHub Pages 在国内访问有时比较慢，偶尔打不开。第一次能打开、缓存好之后，就不受网络影响了。
+
+### 开发时在手机上调试
+
+不用部署，手机和电脑连同一个 Wi-Fi，电脑上运行 `npm run dev`，手机打开终端里显示的 `Network` 地址（例如 `http://192.168.1.10:5173/`）即可。这种方式下离线缓存和「添加到桌面」不生效，其他功能都可以用。
 
 ## 目录
 
